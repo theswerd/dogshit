@@ -1,0 +1,11 @@
+[package]
+name = "terminal-experiments"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+daemonize = "0.5.0"
+libc = "0.2.161"
+rand = "0.8.5"
+termion = "4.0.3"
+vt100 = "0.15.2"
