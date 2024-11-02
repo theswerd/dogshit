@@ -1,15 +1,11 @@
 use libc;
-use libc::{close, dup2, execvp, fork, forkpty, ioctl, setsid, winsize, TIOCGWINSZ};
+use libc::{close, fork, forkpty, ioctl, setsid, winsize, TIOCGWINSZ};
 use rand::Rng;
-use std::collections::{HashMap, HashSet};
-use std::ffi::CString;
 use std::fs::File;
 use std::io::{BufWriter, Read, Write};
 use std::os::unix::io::{AsRawFd, FromRawFd};
-use std::sync::{Arc, RwLock};
 use termion::cursor::{Goto, Hide, Restore, Save, Show};
 use termion::raw::{IntoRawMode, RawTerminal};
-use vt100::Parser;
 
 const DOG_RIGHT: [&str; 2] = [
     r"
@@ -230,7 +226,13 @@ fn walk_dog(saved_stdout_fd: libc::c_int, writer: &mut BufWriter<RawTerminal<Fil
             // sleep for a bit
             std::thread::sleep(std::time::Duration::from_millis(2500));
             has_pooped = true;
-            write_multi_line_message_from_position(writer,position.0 as u16 + 2, position.1 as u16 + DOG_HEIGHT as u16 + 1, &["💩"]).unwrap();
+            write_multi_line_message_from_position(
+                writer,
+                position.0 as u16 + 2,
+                position.1 as u16 + DOG_HEIGHT as u16 + 1,
+                &["💩"],
+            )
+            .unwrap();
             end_write(writer).unwrap();
 
             std::thread::sleep(std::time::Duration::from_millis(500));
